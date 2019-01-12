@@ -9,7 +9,7 @@ namespace CastleGrimtol.Project
   public class GameService : IGameService
   {
 
-    public IRoom CurrentRoom { get; set; }
+    public Room CurrentRoom { get; set; }
     public Player CurrentPlayer { get; set; }
     private Planet CurrentPlanet { get; set; }
 
@@ -48,6 +48,7 @@ namespace CastleGrimtol.Project
     // Opening Screen
     private void OpeningScreen()
     {
+      Console.Title = "A Star Wars Story";
       Console.ForegroundColor = ConsoleColor.White;
       Console.BackgroundColor = ConsoleColor.Black;
       Console.Clear();
@@ -127,6 +128,10 @@ namespace CastleGrimtol.Project
         {
           input[1] = input[1] + " " + input[2];
         }
+        else if (input[1].ToUpper() == "BOLDER")
+        {
+          input[1] = "Large Bolder";
+        }
         switch (input[0])
         {
           case "go":
@@ -141,7 +146,8 @@ namespace CastleGrimtol.Project
             UseItem(input[1]);
             break;
           default:
-            Console.WriteLine("\n\tI do not understand.\n You can use help for addional commands.");
+            Console.Clear();
+            Console.WriteLine("\n\tI do not understand.\n\tYou can use help for addional commands.");
             GetUserInput();
             break;
         }
@@ -182,7 +188,24 @@ namespace CastleGrimtol.Project
         {
           Console.Clear();
           Console.WriteLine("\n\t" + CurrentRoom.Description);
-          GetUserInput();
+          if (CurrentRoom.Name == "AT-AT Transport")
+          {
+            if (CurrentPlayer.hasSTuniformOn)
+            {
+              Console.WriteLine("\n\tYou have successfully infiltrated the Empire. ");
+              WinGame();
+            }
+            else
+            {
+              Console.Clear();
+              Console.WriteLine("\n\tYou walked into a bunch of Storm Troopers and were shot.");
+              Died();
+            }
+          }
+          else
+          {
+            GetUserInput();
+          }
         }
         else
         {
@@ -195,6 +218,21 @@ namespace CastleGrimtol.Project
         Console.WriteLine("\n\tSorry you can not go that way.\n");
         Console.WriteLine("\n\t" + CurrentRoom.Description);
         GetUserInput();
+      }
+    }
+
+    private void WinGame()
+    {
+      Console.Write("\n\tCongratulations you have Won. Would you like to play again(y/n):");
+      string answer = Console.ReadLine();
+      switch (answer)
+      {
+        case "y":
+          Reset();
+          break;
+        default:
+          Quit();
+          break;
       }
     }
 
@@ -244,11 +282,12 @@ namespace CastleGrimtol.Project
     public void Quit()
     {
       Console.WriteLine("Exit");
+      Environment.Exit(1);
     }
 
     public void TakeItem(string itemName)
     {
-      Item objectToTake = CurrentRoom.Items.Find(it => { return itemName.Equals(it.Name); });
+      Item objectToTake = CurrentRoom.Items.Find(it => { return itemName.ToUpper().Equals(it.Name.ToUpper()); });
       if (objectToTake == null)
       {
         Console.WriteLine("Sorry did not understand what you wanted to take.");
@@ -273,12 +312,12 @@ namespace CastleGrimtol.Project
       if (toUse != null)
       {
         Console.WriteLine($"\n\tUsing {toUse.Name}");
-        toUse.use(CurrentPlanet);
+        toUse.use(CurrentRoom, CurrentPlanet, CurrentPlayer, this);
       }
       else if ((toUse = CurrentRoom.Items.Find(it => { return itemName.ToUpper().Equals(it.Name.ToUpper()); })) != null)
       {
         Console.WriteLine($"\n\tUsing {toUse.Name}");
-        toUse.use(CurrentPlanet);
+        toUse.use(CurrentRoom, CurrentPlanet, CurrentPlayer, this);
       }
       else
       {

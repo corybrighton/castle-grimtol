@@ -9,14 +9,16 @@ namespace CastleGrimtol.Project.Models
     public string Name { get; set; }
     public string Description { get; set; }
     public List<Item> Items { get; set; }
-    public Dictionary<string, IRoom> Exits { get; set; }
+    public Dictionary<string, Room> Exits { get; set; }
+    public bool PlaceToChange { get; set; }
 
-    public Room(string name, string description)
+    public Room(string name, string description, bool placeToChange = false)
     {
       Name = name;
       Description = description;
       Items = new List<Item>();
-      Exits = new Dictionary<string, IRoom>();
+      Exits = new Dictionary<string, Room>();
+      PlaceToChange = placeToChange;
     }
 
     public void AddExit(string name, Room room)
@@ -29,6 +31,10 @@ namespace CastleGrimtol.Project.Models
     }
 
     public virtual void FirePlasmaCannon()
+    {
+      Console.WriteLine("\n\tThat was pretty neat!");
+    }
+    public virtual void UseBlaster(Room room)
     {
       Console.WriteLine("\n\tThat was pretty neat!");
     }

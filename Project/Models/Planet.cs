@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace CastleGrimtol.Project.Models
 {
-  class Planet : Room
+  public class Planet : Room
   {
     Dictionary<string, Room> Rooms;
-    public Planet(string name, string description) : base(name, description)
+    public Planet(string name, string description) : base(name, description, false)
     {
       Rooms = new Dictionary<string, Room>();
     }

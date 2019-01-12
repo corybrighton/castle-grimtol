@@ -10,28 +10,18 @@ namespace CastleGrimtol.Project.Models
     public string Description { get; set; }
     public bool Takeable { get; set; }
 
-    // Constructor default wait to be able to take item
-    public Item(string name, string description)
-    {
-      Name = name;
-      Description = description;
-      Takeable = true;
-    }
     // Constructor with wait.
-    public Item(string name, string description, bool takeable)
+    public Item(string name, string description, bool takeable = true)
     {
       Name = name;
       Description = description;
       Takeable = takeable;
     }
-    public virtual void use(Room planet)
+    public virtual void use(Room room, Planet planet, Player player, GameService game)
     {
       Console.WriteLine("\n\tThat was pretty neat.");
     }
-    public virtual void use(Player player)
-    {
-      Console.WriteLine("\n\tThat was pretty neat.");
-    }
+
   }
 
 }

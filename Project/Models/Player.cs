@@ -13,7 +13,7 @@ namespace CastleGrimtol.Project.Models
     {
       PlayerName = "Goerge Antilles";
       Inventory = new List<Item>();
-      Item blaster = new Item("Blaster", "E-11 Lazer Gun");
+      Blaster blaster = new Blaster("Blaster", "E-11 Lazer Gun");
       Inventory.Add(blaster);
       Move = 0;
       hasSTuniformOn = false;

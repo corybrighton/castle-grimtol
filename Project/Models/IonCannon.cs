@@ -6,9 +6,9 @@ namespace CastleGrimtol.Project.Models
   {
     public IonCannon(string name, string description) : base(name, description, false)
     { }
-    public override void use(Room planet)
+    public override void use(Room room, Planet planet, Player player, GameService game)
     {
-      Console.WriteLine("\n\tShooting a large bolt of plasma. You made a great shot\n\tand disabled an AT-AT.");
+      Console.WriteLine("\n\tShooting the Ion Cannon. You made a great shot\n\tand disabled an AT-AT.");
     }
   }
 }

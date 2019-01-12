@@ -5,7 +5,7 @@ namespace CastleGrimtol.Project.Interfaces
 {
   public interface IGameService
   {
-    IRoom CurrentRoom { get; set; }
+    Room CurrentRoom { get; set; }
     Player CurrentPlayer { get; set; }
 
     //Initializes the game, creates rooms, their exits, and add items to rooms

@@ -5,8 +5,8 @@ namespace CastleGrimtol.Project.Models
 {
   class Hoth : Planet
   {
-    public Room Briefing = new Room("Breifing Room", "You are in Echo Base breifing room\n\tthere is a corador to the west and a door to the south.");
-    public Room Hanger = new Room("Hanger", "You are in Echo Base Spaceship Hanger with\n\tX-wings, Y-wings, snowspeeders, and transport ships \n\tbeing loaded to evacuate the base.");
+    public Room Briefing = new Room("Breifing Room", "You are in Echo Base breifing room\n\tthere is a corador to the west and a door to the south.", true);
+    public Room Hanger = new Room("Hanger", "You are in Echo Base Spaceship Hanger with\n\tX-wings, Y-wings, snowspeeders, and transport ships \n\tbeing loaded to evacuate the base.", true);
     public Room Trench1 = new Room("Trench", "You are in the trench. To the East \n\tis more trench. The Empire is attacking \n\tfrom the south. There is a Plasma Cannon.");
     public Room Trench2 = new Room("Trench", "You are in the trench. To the East \n\tand the West is more Trench. The Empire is attacking from the south.");
     public Room Trench3 = new Room("Trench", "You are in the trench. To the West \n\tis more Trench. The Empire is attacking \n\tfrom the south. There is a Ion Cannon.");
@@ -15,6 +15,7 @@ namespace CastleGrimtol.Project.Models
     public Room Between3 = new Room("Between", "There is a clift to the east of you.\n\t You are in the space between the Rebels and \n\tGalatic Empire. Stormtroopers advaning.");
     public Room ATAT2 = new Room("AT-AT controlled area 2", "AT-AT attacking, moving forward!");
     public Room ATAT3 = new Room("AT-AT controlled area 3", "AT-AT attacking, moving forward!");
+    public Room Winning = new Room("AT-AT Transport", "You have won the game.\n\tYou are marched onto any AT-AT and transported off planet.");
     public bool PlasmaCannonFired { get; set; } = false;
     public Hoth(string name, string description) : base(name, description)
     {
@@ -61,12 +62,12 @@ namespace CastleGrimtol.Project.Models
       Hanger.AddItem(new Item("R5-D4", "Astromec Droid great for all uses."));
       Trench1.AddItem(new PlasmaCannon("Plasma Cannon", "Large Cannon"));
       Trench3.AddItem(new IonCannon("Ion Cannon", "Large Cannon"));
-      Between2.AddItem(new Item("Large Bolder", "Great for hiding behind", false));
+      Between2.AddItem(new Bolder("Large Bolder", "Great for hiding behind"));
     }
 
     public override bool GoodMove(Player player, string room)
     {
-      int baseDestoried = 10;
+      int baseDestoried = 8;
       player.Move++;
       if (player.Move == baseDestoried)
       {
@@ -80,7 +81,7 @@ namespace CastleGrimtol.Project.Models
       if ((room == Between1.Name || room == Between2.Name || room == Between3.Name) && !PlasmaCannonFired)
       {
         Console.Clear();
-        Console.WriteLine("\n\tYou crazy charging an army?");
+        Console.WriteLine("\n\tYou crazy, charging an army?");
         return false;
       }
 
@@ -101,6 +102,7 @@ namespace CastleGrimtol.Project.Models
       Thread.Sleep(1500);
       ATAT2.Description = "\n\tAT-AT are moving back to ships.";
       ATAT3.Description = "\n\tAT-AT are moving back to ships.";
+      ATAT3.AddExit("south", Winning);
       Briefing.Description = "\n\tEcho Base has been destoryed. This room is left burning.\n\tGood thing you weren't here.";
       Hanger.Description = "\n\tThe hanger has been overrun by Stromtroopers.";
       Between1.Description = "\n\tStormtroopers are guarding this area.";
@@ -110,8 +112,22 @@ namespace CastleGrimtol.Project.Models
 
     public override void FirePlasmaCannon()
     {
-      Between2.AddItem(new Item("Uniform", "It didn't help the Storm Tooper."));
+      if (Between2.Items.Find(item => { return item.Name == "Uniform"; }) == null)
+      {
+        Between2.AddItem(new Uniform("Uniform", "It didn't help the Storm Tooper."));
+      }
       PlasmaCannonFired = true;
+    }
+    public override void UseBlaster(Room room)
+    {
+      Console.WriteLine("\n\tYou hit a Storm Trooper");
+      if (room.Equals(Trench2))
+      {
+        if (Between2.Items.Find(item => { return item.Name == "Uniform"; }) == null)
+        {
+          Between2.AddItem(new Uniform("Uniform", "It didn't help the Storm Tooper."));
+        }
+      }
     }
   }
 }

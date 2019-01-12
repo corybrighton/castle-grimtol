@@ -6,9 +6,9 @@ namespace CastleGrimtol.Project.Models
   {
     public PlasmaCannon(string name, string description) : base(name, description, false)
     { }
-    public override void use(Room planet)
+    public override void use(Room room, Planet planet, Player player, GameService game)
     {
-      Console.WriteLine("\n\tShooting the Ion Cannon. You hit amoung a group\n\tof Strom Troopers.");
+      Console.WriteLine("\n\tShooting the PLasma Cannon. You hit amoung a group\n\tof Strom Troopers.");
       planet.FirePlasmaCannon();
     }
   }
