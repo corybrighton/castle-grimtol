@@ -24,9 +24,8 @@ namespace CastleGrimtol.Project
     {
       CurrentPlayer = new Player();
       Hoth hoth = new Hoth("Hoth", "Ice Planet");
-
       CurrentPlanet = hoth;
-      CurrentRoom = hoth.briefing;
+      CurrentRoom = hoth.Briefing;
     }
 
     //Setup and Starts the Game loop
@@ -42,9 +41,8 @@ namespace CastleGrimtol.Project
     {
       Setup();
       Console.Clear();
-      Console.WriteLine(@"Echo Bace is under attack by the Galactic Empire. 
-      You were just given the mission to infiltrate the Empire and bring back anything that would help in the war.");
-
+      StartLine();
+      GetUserInput();
     }
 
     // Opening Screen
@@ -68,32 +66,67 @@ namespace CastleGrimtol.Project
                  88  88  88   88 88    88  88  88
                  88 8888 88  88   88   88888    8888
                   888  888  888888888  88  88      88
-                   88  88   88     88  88   88888888");
+                   88  88   88     88  88   88888888
+
+
+
+
+");
       Thread.Sleep(2000);
       Console.Clear();
       Console.ForegroundColor = ConsoleColor.Blue;
       Console.WriteLine(@"
       
       
+
       
       
-      A long time ago, in a galaxy 
-      far, far away...");
+        A long time ago, in a galaxy 
+        far, far away...
+
+
+
+
+");
       Thread.Sleep(2000);
       Console.ResetColor();
+      StartLine();
+    }
+
+    public void StartLine()
+    {
       Console.Clear();
-      Console.WriteLine(@"
-      Echo Bace is under attack by the Galactic Empire. 
-      You were just given the mission to infiltrate the Empire and bring back anything that would help in the war.");
+      Console.WriteLine("\n\tEcho Bace is under attack by the Galactic Empire.");
+      Console.WriteLine("\tYou were just given the mission to infiltrate the Empire");
+      Console.WriteLine("\tand bring back anything that would help in the war.");
+    }
+
+    public void Died()
+    {
+      Console.Write("\n\tYou have Died would you like to play again(y/n):");
+      string answer = Console.ReadLine();
+      switch (answer)
+      {
+        case "y":
+          Reset();
+          break;
+        default:
+          Quit();
+          break;
+      }
     }
 
     public void GetUserInput()
     {
-      Console.Write("What would you like to do: ");
+      Console.Write("\n\tWhat would you like to do: ");
       string userInput = Console.ReadLine();
       string[] input = userInput.Split(' ');
       if (input.Length > 1)
       {
+        if (input.Length > 2)
+        {
+          input[1] = input[1] + " " + input[2];
+        }
         switch (input[0])
         {
           case "go":
@@ -108,8 +141,7 @@ namespace CastleGrimtol.Project
             UseItem(input[1]);
             break;
           default:
-            Console.WriteLine(@"
-            I do not understand. Use help for addional commands.");
+            Console.WriteLine("\n\tI do not understand.\n You can use help for addional commands.");
             GetUserInput();
             break;
         }
@@ -122,19 +154,19 @@ namespace CastleGrimtol.Project
             Quit();
             break;
           case "look":
-            // to do
             Look();
             break;
           case "inventory":
-            // to do list inventory
             Inventory();
             break;
           case "help":
-            // to do show help
             Help();
             break;
           case "restart":
             Reset();
+            break;
+          default:
+            Look();
             break;
         }
       }
@@ -146,39 +178,67 @@ namespace CastleGrimtol.Project
       if (CurrentRoom.Exits.ContainsKey(direction))
       {
         CurrentRoom = CurrentRoom.Exits[direction];
-        Console.Clear();
+        if (CurrentPlanet.GoodMove(CurrentPlayer, CurrentRoom.Name))
+        {
+          Console.Clear();
+          Console.WriteLine("\n\t" + CurrentRoom.Description);
+          GetUserInput();
+        }
+        else
+        {
+          Died();
+        }
       }
       else
       {
         Console.Clear();
-        Console.WriteLine(@"Sorry you can not go that way.
-        ");
+        Console.WriteLine("\n\tSorry you can not go that way.\n");
+        Console.WriteLine("\n\t" + CurrentRoom.Description);
+        GetUserInput();
       }
-      Console.WriteLine(CurrentRoom.Description);
-      GetUserInput();
     }
 
     public void Help()
     {
       Console.Clear();
       Console.WriteLine(@"
-      Options:
-        go 'direction'  -- Go north, east, south, or west
-        take 'item'     -- Take an item that you find
-        use 'item'      -- Use an item to do something
-        inventory       -- See the items you have
-        quit            -- Quit the game");
+  Options:
+    go 'direction'  -- Go north, east, south, or west
+    take 'item'     -- Take an item that you find
+    use 'item'      -- Use an item to do something
+    inventory       -- See the items you have
+    look            -- Look around and see what is there
+    restart         -- Restart the game
+    quit            -- Quit the game");
       GetUserInput();
     }
 
     public void Inventory()
     {
-      throw new System.NotImplementedException();
+      Console.Clear();
+      Console.WriteLine();
+      Console.WriteLine("\n\tYou have: ");
+      foreach (var item in CurrentPlayer.Inventory)
+      {
+        Console.WriteLine($"\t{item.Name}  --  {item.Description}");
+      }
+      GetUserInput();
     }
 
     public void Look()
     {
-      throw new System.NotImplementedException();
+      Console.Clear();
+      Console.WriteLine();
+      Console.WriteLine("\n\t" + CurrentRoom.Description);
+      if (CurrentRoom.Items.Count > 0)
+      {
+        Console.WriteLine("\n\tThere is");
+        foreach (var item in CurrentRoom.Items)
+        {
+          Console.WriteLine("\t" + item.Name);
+        }
+      }
+      GetUserInput();
     }
 
     public void Quit()
@@ -188,12 +248,43 @@ namespace CastleGrimtol.Project
 
     public void TakeItem(string itemName)
     {
-      throw new System.NotImplementedException();
+      Item objectToTake = CurrentRoom.Items.Find(it => { return itemName.Equals(it.Name); });
+      if (objectToTake == null)
+      {
+        Console.WriteLine("Sorry did not understand what you wanted to take.");
+      }
+      else if (objectToTake.Takeable)
+      {
+        CurrentPlayer.Inventory.Add(objectToTake);
+        CurrentRoom.Items.Remove(objectToTake);
+        Console.WriteLine($"\n\tYou have a {objectToTake.Name}");
+      }
+      else
+      {
+        Console.WriteLine("\n\tThat will break your back. You leave it.");
+      }
+      GetUserInput();
     }
 
     public void UseItem(string itemName)
     {
-      throw new System.NotImplementedException();
+      Console.Clear();
+      var toUse = CurrentPlayer.Inventory.Find(it => { return itemName.ToUpper().Equals(it.Name.ToUpper()); });
+      if (toUse != null)
+      {
+        Console.WriteLine($"\n\tUsing {toUse.Name}");
+        toUse.use(CurrentPlanet);
+      }
+      else if ((toUse = CurrentRoom.Items.Find(it => { return itemName.ToUpper().Equals(it.Name.ToUpper()); })) != null)
+      {
+        Console.WriteLine($"\n\tUsing {toUse.Name}");
+        toUse.use(CurrentPlanet);
+      }
+      else
+      {
+        Console.WriteLine("\n\tCan not use that.");
+      }
+      GetUserInput();
     }
   }
 }

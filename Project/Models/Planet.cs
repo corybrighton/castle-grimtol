@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace CastleGrimtol.Project.Models
@@ -9,5 +10,11 @@ namespace CastleGrimtol.Project.Models
     {
       Rooms = new Dictionary<string, Room>();
     }
+    public virtual bool GoodMove(Player player, string room)
+    {
+      player.Move++;
+      return true;
+    }
+
   }
 }

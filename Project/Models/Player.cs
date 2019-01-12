@@ -8,17 +8,15 @@ namespace CastleGrimtol.Project.Models
     public string PlayerName { get; set; }
     public int Move { get; set; }
     public List<Item> Inventory { get; set; }
+    public bool hasSTuniformOn { get; set; }
     public Player()
     {
       PlayerName = "Goerge Antilles";
       Inventory = new List<Item>();
-      Item Blaster = new Item("E-11 Blaster", "Lazer Gun");
+      Item blaster = new Item("Blaster", "E-11 Lazer Gun");
+      Inventory.Add(blaster);
       Move = 0;
-    }
-
-    public void MoveIncrementer()
-    {
-      Move++;
+      hasSTuniformOn = false;
     }
   }
 }
