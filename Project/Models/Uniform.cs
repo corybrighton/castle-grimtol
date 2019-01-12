@@ -6,10 +6,9 @@ namespace CastleGrimtol.Project.Models
   {
     public Uniform(string name, string description) : base(name, description)
     { }
-    public override void use(Room planet)
+    public override void use(Player player)
     {
-      Console.WriteLine("\n\tShooting the Ion Cannon. You hit amoung a group\n\tof Strom Troopers.");
-      planet.FirePlasmaCannon();
+      player.hasSTuniformOn = true;
     }
   }
 }

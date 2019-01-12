@@ -28,6 +28,10 @@ namespace CastleGrimtol.Project.Models
     {
       Console.WriteLine("\n\tThat was pretty neat.");
     }
+    public virtual void use(Player player)
+    {
+      Console.WriteLine("\n\tThat was pretty neat.");
+    }
   }
 
 }
