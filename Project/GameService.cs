@@ -202,6 +202,10 @@ namespace CastleGrimtol.Project
               Died();
             }
           }
+          else if (CurrentRoom.Name == "Transport")
+          {
+            WinGame();
+          }
           else
           {
             GetUserInput();
@@ -242,6 +246,7 @@ namespace CastleGrimtol.Project
       Console.WriteLine(@"
   Options:
     go 'direction'  -- Go north, east, south, or west
+    go on ship      -- Allow you on the ship
     take 'item'     -- Take an item that you find
     use 'item'      -- Use an item to do something
     inventory       -- See the items you have
