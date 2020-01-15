@@ -12,4 +12,9 @@ Move around the map to find your way off planet and infiltrate the galatic empri
   - `Help` Shows a list of commands and actions
   - `Quit` Quits the Game
 
-<img src="https://i.pinimg.com/originals/42/97/04/429704b93743130d07904e1ff0dc63a8.jpg"/>
+
+
+<a href="https://asciiart.website/index.php?art=movies/star%20wars>Thanks for the art</a>
+
+
+<img src="http://vignette2.wikia.nocookie.net/starwars/images/c/c5/Echo_Base_Layout_AoRSR.png/revision/latest?cb=20160618224920"/>
