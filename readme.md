@@ -19,16 +19,6 @@ Move around the map to find your way off planet and infiltrate the galatic empri
 Maps and other information to follow, If you do want to enjoy the game with out seeing the how it was made stop scrolling now.
 
 <img src="https://vignette.wikia.nocookie.net/starwars/images/c/cc/Star-wars-logo-new-tall.jpg/revision/latest/scale-to-width-down/340?cb=20190313021755" />
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
+</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.</br>.
+
 <img src="http://vignette2.wikia.nocookie.net/starwars/images/c/c5/Echo_Base_Layout_AoRSR.png/revision/latest?cb=20160618224920"/>
